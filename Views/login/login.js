@@ -1,7 +1,7 @@
 import error , {API_PHP} from '../helpers/error.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-   localStorage.removeItem("keyToken");   
+   localStorage.removeItem("token");   
 }) 
 
 document.getElementById("frmLogin").addEventListener("submit" , e => {
@@ -10,18 +10,18 @@ document.getElementById("frmLogin").addEventListener("submit" , e => {
     (async function(){
         try {
             let body = new FormData(document.getElementById("frmLogin"));
-            let request = await fetch(API_PHP + `auth/${body.get('correo')}/${body.get('password')}/`);
+            let request = await fetch(API_PHP + `auth/${body.get('email')}/${body.get('password')}/`);
             let response = await request.json();
     
             //console.log(response);
 
             if (response.status == "error") {                    
-               error("error","alert-danger",response.result.errorMsg);
-            } else if (response.data.login) {
-                localStorage.setItem("keyToken" , response.data.keyToken);
+               error("error","alert-danger",response.message);
+            } else if (response.status == "ok") {
+                localStorage.setItem("token" , response.message.token);
                 let body1 = new FormData();
-                body1.append("name", response.data.name);
-                body1.append("rol", response.data.rol);
+                body1.append("name", response.message.nombre);
+                body1.append("rol", response.message.rol);
 
                 let request1 = await fetch("./Core/dataUser.php",{method: "post", body: body1});
                 let response1 = await request1.json();

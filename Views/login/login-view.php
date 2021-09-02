@@ -40,7 +40,7 @@ Auth::accessLogin();
                                     <div class="card-body">
 
                                         <div class="form-floating mb-3">
-                                            <input class="form-control" name="correo" id="correo" type="email" placeholder="name@example.com" />
+                                            <input class="form-control" name="email" id="email" type="email" placeholder="name@example.com" />
                                             <label for="inputEmail">Correo</label>
                                         </div>
                                         <div class="form-floating mb-3">

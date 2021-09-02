@@ -38,17 +38,22 @@ document.getElementById("frmChangePassword").addEventListener("submit" , e => {
             let body = {
                 "oldPassword": document.getElementById("oldPassword").value,
                 "newPassword": document.getElementById("newPassword").value,
-                "confirmNewPassword": document.getElementById("confirmNewPassword").value,
-                "keyToken": localStorage.getItem("keyToken")
+                "confirmNewPassword": document.getElementById("confirmNewPassword").value                
             };
-   
-            let request = await fetch(`${API_PHP}usuario/password/` , {method: 'PATCH', body: JSON.stringify(body),})
+            
+            let token = localStorage.getItem("token");
+            let request = await fetch(`${API_PHP}usuario/password/`, {
+                headers: {
+                         "Content-Type": "application/json",
+                         Authorization: `Bearer ${token}`
+                }, 
+                method: 'PATCH', body: JSON.stringify(body)})
             let response = await request.json();
-
+            
             if (response.status == "error") {
-               error("errorChangePassword","alert-danger",response.result.errorMsg);                              
+               error("errorChangePassword","alert-danger",response.message);                              
             } else if (response.status == "ok") {
-                error("errorChangePassword","alert-success",response.result.errorMsg); 
+                error("errorChangePassword","alert-success",response.message); 
                 clearFormChangePassword();
             } else {
                 error("errorChangePassword","alert-danger","Algo salio mal");  
