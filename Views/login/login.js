@@ -1,4 +1,5 @@
-import error , {API_PHP} from '../helpers/error.js';
+import error from '../helpers/error.js';
+import config from '../helpers/config.js';
 
 document.addEventListener('DOMContentLoaded', () => {
    localStorage.removeItem("token");   
@@ -10,7 +11,7 @@ document.getElementById("frmLogin").addEventListener("submit" , e => {
     (async function(){
         try {
             let body = new FormData(document.getElementById("frmLogin"));
-            let request = await fetch(API_PHP + `auth/${body.get('email')}/${body.get('password')}/`);
+            let request = await fetch(config.API + `auth/${body.get('email')}/${body.get('password')}/`);
             let response = await request.json();
     
             //console.log(response);

@@ -1,4 +1,5 @@
-import error , {API_PHP} from '../helpers/error.js';
+import error from '../helpers/error.js';
+import config from '../helpers/config.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     disabledUserForm();
@@ -211,20 +212,21 @@ document.getElementById('frmSaveUser').addEventListener('submit', e => {
    
    let body = {};
    let formData = new FormData(document.getElementById("frmSaveUser"));
-   formData.append("keyToken" , localStorage.getItem("keyToken"));
    formData.forEach((value, key) => {body[key] = value});
 
    (async function () {
        try {
-           let request = await fetch(`${API_PHP}usuario/`,{method: 'POST',body: JSON.stringify(body)});
+           let request = await fetch(`${config.API}usuario/`,{
+                                      headers: {"Content-Type":"application/json" , Authorization: `Bearer ${config.token}`},
+                                      method: 'POST',body: JSON.stringify(body)});
            let response = await request.json();
 
            if (response.status == "error") {
-               error("errorSaveUser","alert-danger" , response.result.errorMsg);
+               error("errorSaveUser","alert-danger" , response.message);
            } else if (response.status == "ok") {
               clearUserForm(); 
               disabledUserForm();
-              error("errorSaveUser","alert-success" , response.result.errorMsg);
+              error("errorSaveUser","alert-success" , response.message);
            } else {
                error("errorSaveUser","alert-danger" , "Algo salio mal");
            }

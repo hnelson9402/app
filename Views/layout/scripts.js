@@ -1,4 +1,5 @@
-import error , {API_PHP} from '../helpers/error.js';
+import error from '../helpers/error.js';
+import config from '../helpers/config.js';
 
 window.addEventListener('DOMContentLoaded', event => {
 
@@ -39,13 +40,12 @@ document.getElementById("frmChangePassword").addEventListener("submit" , e => {
                 "oldPassword": document.getElementById("oldPassword").value,
                 "newPassword": document.getElementById("newPassword").value,
                 "confirmNewPassword": document.getElementById("confirmNewPassword").value                
-            };
-            
-            let token = localStorage.getItem("token");
-            let request = await fetch(`${API_PHP}usuario/password/`, {
+            };            
+           
+            let request = await fetch(`${config.API}usuario/password/`, {
                 headers: {
                          "Content-Type": "application/json",
-                         Authorization: `Bearer ${token}`
+                         Authorization: `Bearer ${config.token}`
                 }, 
                 method: 'PATCH', body: JSON.stringify(body)})
             let response = await request.json();
